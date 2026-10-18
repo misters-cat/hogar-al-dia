@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#152946">
+  <meta name="description" content="Control sencillo y privado del presupuesto de tu hogar: planificado, pagado y saldo disponible.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Hogar al Día">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Hogar al Día · Mi presupuesto</title>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m3 11 9-7 9 7v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8 14 2.6 2.6L16 11" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>Hogar al Día</strong><small>Finanzas de casa, sin enredos</small></span></div>
+      <button class="privacy-btn" id="privacyBtn" title="Dónde se guardan tus datos"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8"/></svg><span>Datos en este dispositivo</span></button>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Resumen del mes">
+        <div class="hero-ambient hero-ambient-one"></div><div class="hero-ambient hero-ambient-two"></div>
+        <div class="hero-top"><div><div class="eyebrow eyebrow-light">MI PRESUPUESTO MENSUAL</div><h1>Que tu dinero <em>rinda más.</em></h1><p>Todo lo importante de tus cuentas en un solo lugar.</p></div>
+        <div class="month-control" aria-label="Navegación por mes"><button id="prevMonth" class="month-arrow" type="button" title="Mes anterior" aria-label="Mes anterior">‹</button><span id="monthLabel" aria-live="polite"></span><button id="nextMonth" class="month-arrow" type="button" title="Mes siguiente" aria-label="Mes siguiente">›</button></div></div>
+        <div class="hero-total"><div class="hero-total-label">Disponible en este momento <button class="info-dot" id="infoAvailable" title="Ingresos recibidos menos pagos realizados" aria-label="¿Qué significa disponible ahora?">i</button></div><div class="hero-amount" id="availableAmount">$0</div><div class="hero-total-foot" id="availableFoot">Ingresos recibidos menos gastos pagados</div></div>
+      </section>
+
+      <section class="metrics" aria-label="Indicadores de presupuesto">
+        <article class="metric"><div class="metric-heading"><span>Saldo previsto</span><span class="metric-icon green"><svg viewBox="0 0 24 24" fill="none"><path d="M4 17.5 10 11l4 4 6-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><strong id="plannedBalance">$0</strong><small>Ingresos estimados − gastos previstos</small></article>
+        <article class="metric"><div class="metric-heading"><span>Presupuesto pendiente</span><span class="metric-icon amber"><svg viewBox="0 0 24 24" fill="none"><path d="M12 6v6l4 2M3.5 12a8.5 8.5 0 1 0 17 0 8.5 8.5 0 0 0-17 0Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span></div><strong id="remainingBudget">$0</strong><small>Gastos aún no pagados o utilizados</small></article>
+        <article class="metric"><div class="metric-heading"><span>Ingresos recibidos</span><span class="metric-icon blue"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18m5-13H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span></div><strong id="receivedIncome">$0</strong><small id="incomeDifference">De $0 presupuestados</small></article>
+      </section>
+
+      <section class="progress-section surface" aria-label="Progreso de gastos"><div class="progress-title"><div><div class="section-eyebrow">AVANCE DEL MES</div><h2>Cómo vas con tus gastos</h2></div><strong id="expensePercent">0%</strong></div><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="expenseProgress"><span id="expenseProgressFill"></span></div><div class="progress-figures"><span>Pagado: <b id="expensePaid">$0</b></span><span>Presupuestado: <b id="expensePlanned">$0</b></span></div></section>
+
+      <section class="income-section surface"><div class="section-heading"><div><div class="section-eyebrow">ENTRADAS DE DINERO</div><h2>Mis ingresos</h2><p>Separa lo que esperas recibir de lo que ya recibiste.</p></div><button class="btn btn-soft" id="editIncome" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4 17 11-11 3 3L7 20H4v-3Zm10-10 3-3 3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Editar ingresos</button></div><div class="income-figures"><div><small>Ingreso previsto</small><strong id="incomePlanned">$0</strong></div><div class="income-separator"></div><div><small>Ingreso recibido</small><strong id="incomeActual">$0</strong></div></div></section>
+
+      <section class="expenses-section surface"><div class="section-heading expenses-title"><div><div class="section-eyebrow">SALIDAS DE DINERO</div><h2>Gastos del hogar <span id="expenseCount" class="count">0</span></h2><p>Escribe el monto presupuestado y lo que realmente pagaste.</p></div><button class="btn btn-primary" id="newExpense" type="button"><span class="plus">+</span>Agregar gasto</button></div>
+        <div class="filters"><div class="segmented" role="group" aria-label="Filtrar gastos"><button class="filter active" data-filter="all" aria-pressed="true">Todos</button><button class="filter" data-filter="pending" aria-pressed="false">Pendientes</button><button class="filter" data-filter="paid" aria-pressed="false">Pagados</button><button class="filter" data-filter="over" aria-pressed="false">Excedidos</button></div></div>
+        <div class="table-head"><span>GASTO</span><span>PRESUPUESTADO</span><span>PAGADO</span><span>RESTA / DIFERENCIA</span><span></span></div>
+        <div id="expenseList" class="expenses-list"></div><div class="list-empty" id="listEmpty" hidden>No hay gastos en este filtro.</div>
+        <div class="table-footer"><div>Total de gastos</div><strong id="footBudget">$0</strong><strong id="footPaid">$0</strong><strong id="footRemaining">$0</strong><span></span></div>
+      </section>
+      <section class="bottom-actions"><div><strong>Tu información te pertenece.</strong><p>No necesitas cuenta ni contraseña. Recuerda descargar un respaldo si cambias de teléfono.</p></div><div class="backup-actions"><button id="exportBackup" type="button" class="btn btn-outline">↓ Descargar respaldo</button><button id="importBackup" type="button" class="btn btn-outline">↑ Restaurar respaldo</button><button id="exportCsv" type="button" class="btn btn-outline">↓ CSV del mes</button></div><input id="backupFile" type="file" accept="application/json,.json" hidden></section>
+    </main>
+    <footer>Hogar al Día <span>·</span> v1.0 <span>·</span> Hecha para administrar tu hogar, sin costos ni anuncios.</footer>
+  </div>
+
+  <dialog id="expenseDialog" class="modal"><form id="expenseForm" method="dialog" novalidate><div class="modal-head"><div><div class="section-eyebrow">TU PRESUPUESTO</div><h2 id="expenseDialogTitle">Agregar gasto</h2></div><button class="close" type="button" data-close="expenseDialog" aria-label="Cerrar">×</button></div><label for="expenseName">Nombre del gasto</label><input id="expenseName" type="text" maxlength="50" required placeholder="Ej. Luz, supermercado"><div class="field-grid"><div><label for="expenseBudget">Presupuestado ($)</label><input id="expenseBudget" inputmode="numeric" type="number" min="0" max="9999999999" step="1" value="0"></div><div><label for="expensePaidInput">Pagado ($)</label><input id="expensePaidInput" inputmode="numeric" type="number" min="0" max="9999999999" step="1" value="0"></div></div><label for="expenseNote">Detalle (opcional)</label><textarea id="expenseNote" maxlength="300" rows="3" placeholder="Ej. Fechas, cuotas o desglose de suscripciones"></textarea><p class="modal-help">Puedes tener un gasto parcialmente pagado, o incluso gastar más de lo presupuestado.</p><div class="modal-actions"><button type="button" id="deleteExpense" class="btn btn-danger" hidden>Eliminar</button><span class="grow"></span><button type="button" data-close="expenseDialog" class="btn btn-soft">Cancelar</button><button type="submit" class="btn btn-primary">Guardar gasto</button></div></form></dialog>
+  <dialog id="incomeDialog" class="modal"><form id="incomeForm" method="dialog"><div class="modal-head"><div><div class="section-eyebrow">ENTRADAS DEL MES</div><h2>Editar ingresos</h2></div><button class="close" type="button" data-close="incomeDialog" aria-label="Cerrar">×</button></div><p class="modal-help">Agrega sueldo u otros ingresos. Recibido es el dinero que ya llegó.</p><div id="incomeEditor" class="income-editor"></div><button id="addIncome" type="button" class="btn btn-soft income-add">+ Añadir ingreso</button><div class="modal-actions"><span class="grow"></span><button type="button" data-close="incomeDialog" class="btn btn-soft">Cancelar</button><button type="submit" class="btn btn-primary">Guardar ingresos</button></div></form></dialog>
+  <dialog id="noticeDialog" class="modal notice-modal"><div class="modal-head"><h2 id="noticeTitle">Información</h2><button class="close" type="button" data-close="noticeDialog" aria-label="Cerrar">×</button></div><div id="noticeContent"></div><div class="modal-actions"><span class="grow"></span><button type="button" data-close="noticeDialog" class="btn btn-primary">Entendido</button></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
